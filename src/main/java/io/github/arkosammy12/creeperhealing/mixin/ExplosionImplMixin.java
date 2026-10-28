@@ -1,5 +1,6 @@
 package io.github.arkosammy12.creeperhealing.mixin;
 
+import io.github.arkosammy12.creeperhealing.CreeperHealing;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
@@ -75,7 +76,7 @@ public abstract class ExplosionImplMixin implements Explosion, ExplosionImplDuck
         Level.ExplosionInteraction explosionSourceType = (this.explosionSourceType);
         boolean shouldHeal = switch (explosionSourceType) {
             case MOB -> {
-                if (!ConfigUtils.getRawBooleanSetting(ConfigUtils.HEAL_MOB_EXPLOSIONS)) {
+                if (!CreeperHealing.CONFIG.explosion_sources.heal_mob_explosions.get()) {
                     yield false;
                 }
                 LivingEntity causingEntity = this.getIndirectSourceEntity();
@@ -83,13 +84,13 @@ public abstract class ExplosionImplMixin implements Explosion, ExplosionImplDuck
                     yield true;
                 }
                 String entityId = BuiltInRegistries.ENTITY_TYPE.getKey(causingEntity.getType()).toString();
-                List<? extends String> healMobExplosionsBlacklist = ConfigUtils.getRawStringListSetting(ConfigUtils.HEAL_MOB_EXPLOSIONS_BLACKLIST);
+                List<? extends String> healMobExplosionsBlacklist = CreeperHealing.CONFIG.explosion_sources.heal_mob_explosions_blacklist.get();
                 yield !healMobExplosionsBlacklist.contains(entityId);
             }
-            case BLOCK -> ConfigUtils.getRawBooleanSetting(ConfigUtils.HEAL_BLOCK_EXPLOSIONS);
-            case TNT -> ConfigUtils.getRawBooleanSetting(ConfigUtils.HEAL_TNT_EXPLOSIONS);
-            case TRIGGER -> ConfigUtils.getRawBooleanSetting(ConfigUtils.HEAL_TRIGGERED_EXPLOSIONS);
-            case null, default -> ConfigUtils.getRawBooleanSetting(ConfigUtils.HEAL_OTHER_EXPLOSIONS);
+            case BLOCK -> CreeperHealing.CONFIG.explosion_sources.heal_block_explosions.get();
+            case TNT -> CreeperHealing.CONFIG.explosion_sources.heal_tnt_explosions.get();
+            case TRIGGER -> CreeperHealing.CONFIG.explosion_sources.heal_triggered_explosions.get();
+            case null, default -> CreeperHealing.CONFIG.explosion_sources.heal_other_explosions.get();
         };
         return shouldHeal;
     }

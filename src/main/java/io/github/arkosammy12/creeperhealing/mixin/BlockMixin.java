@@ -1,5 +1,6 @@
 package io.github.arkosammy12.creeperhealing.mixin;
 
+import io.github.arkosammy12.creeperhealing.CreeperHealing;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
@@ -74,7 +75,7 @@ public abstract class BlockMixin {
         Level.ExplosionInteraction explosionSourceType = ((ExplosionImplDuck) explosion).creeperhealing$getExplosionInteraction();
         boolean shouldDropItems = switch (explosionSourceType) {
             case MOB -> {
-                if (!ConfigUtils.getRawBooleanSetting(ConfigUtils.DROP_ITEMS_ON_MOB_EXPLOSIONS)) {
+                if (!CreeperHealing.CONFIG.explosion_item_drops.drop_items_on_mob_explosions.get()) {
                     yield false;
                 }
                 LivingEntity causingEntity = explosion.getIndirectSourceEntity();
@@ -82,17 +83,17 @@ public abstract class BlockMixin {
                     yield true;
                 }
                 String entityId = BuiltInRegistries.ENTITY_TYPE.getKey(causingEntity.getType()).toString();
-                List<? extends String> dropItemsOnMobExplosionsBlacklist = ConfigUtils.getRawStringListSetting(ConfigUtils.DROP_ITEMS_ON_MOB_EXPLOSIONS_BLACKLIST);
+                List<? extends String> dropItemsOnMobExplosionsBlacklist = CreeperHealing.CONFIG.explosion_item_drops.drop_items_on_mob_explosions_blacklist.get();
                 yield !dropItemsOnMobExplosionsBlacklist.contains(entityId);
             }
-            case BLOCK -> ConfigUtils.getRawBooleanSetting(ConfigUtils.DROP_ITEMS_ON_BLOCK_EXPLOSIONS);
-            case TNT -> ConfigUtils.getRawBooleanSetting(ConfigUtils.DROP_ITEMS_ON_TNT_EXPLOSIONS);
-            case TRIGGER -> ConfigUtils.getRawBooleanSetting(ConfigUtils.DROP_ITEMS_ON_TRIGGERED_EXPLOSIONS);
-            case null, default -> ConfigUtils.getRawBooleanSetting(ConfigUtils.DROP_ITEMS_ON_OTHER_EXPLOSIONS);
+            case BLOCK -> CreeperHealing.CONFIG.explosion_item_drops.drop_items_on_block_explosions.get();
+            case TNT -> CreeperHealing.CONFIG.explosion_item_drops.drop_items_on_tnt_explosions.get();
+            case TRIGGER -> CreeperHealing.CONFIG.explosion_item_drops.drop_items_on_triggered_explosions.get();
+            case null, default -> CreeperHealing.CONFIG.explosion_item_drops.drop_items_on_other_explosions.get();
         };
 
         // Do not drop the inventories of blocks if the inventory will be restored later
-        if (ConfigUtils.getRawBooleanSetting(ConfigUtils.RESTORE_BLOCK_NBT)) {
+        if (CreeperHealing.CONFIG.preferences.restore_block_nbt.get()) {
             ExplosionUtils.DROP_CONTAINER_INVENTORY_ITEMS.set(false);
         }
 

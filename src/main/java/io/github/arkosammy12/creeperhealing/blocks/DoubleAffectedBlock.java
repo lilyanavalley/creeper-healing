@@ -1,5 +1,6 @@
 package io.github.arkosammy12.creeperhealing.blocks;
 
+import io.github.arkosammy12.creeperhealing.CreeperHealing;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.FallingBlock;
@@ -85,7 +86,7 @@ public class DoubleAffectedBlock extends SingleAffectedBlock {
 
     @Override
     protected boolean shouldForceHeal() {
-        boolean forceBlocksWithNbtToAlwaysHeal = ConfigUtils.getRawBooleanSetting(ConfigUtils.FORCE_BLOCKS_WITH_NBT_TO_ALWAYS_HEAL);
+        boolean forceBlocksWithNbtToAlwaysHeal = CreeperHealing.CONFIG.preferences.force_blocks_with_nbt_to_always_heal.get();
         return this.getNbt() != null && this.getSecondHalfNbt() != null && forceBlocksWithNbtToAlwaysHeal;
     }
 
@@ -125,7 +126,7 @@ public class DoubleAffectedBlock extends SingleAffectedBlock {
         }
 
         ExplosionUtils.pushEntitiesUpwards(world, firstHalfPos, firstHalfState, firstHalfState.hasProperty(BlockStateProperties.DOUBLE_BLOCK_HALF));
-        boolean makeFallingBlocksFall = ConfigUtils.getRawBooleanSetting(ConfigUtils.MAKE_FALLING_BLOCKS_FALL);
+        boolean makeFallingBlocksFall = CreeperHealing.CONFIG.preferences.make_falling_blocks_fall.get();
         if (firstHalfState.getBlock() instanceof FallingBlock) {
             ExplosionUtils.FALLING_BLOCK_SCHEDULE_TICK.set(makeFallingBlocksFall);
         }

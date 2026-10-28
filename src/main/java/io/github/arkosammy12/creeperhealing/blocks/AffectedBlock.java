@@ -1,5 +1,6 @@
 package io.github.arkosammy12.creeperhealing.blocks;
 
+import io.github.arkosammy12.creeperhealing.CreeperHealing;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.resources.ResourceKey;
@@ -36,7 +37,7 @@ public interface AffectedBlock {
     static AffectedBlock newInstance(BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, Level world) {
         ResourceKey<Level> worldRegistryKey = world.dimension();
         long blockPlacementDelay = ConfigUtils.getBlockPlacementDelay();
-        boolean restoreBlockNbt = ConfigUtils.getRawBooleanSetting(ConfigUtils.RESTORE_BLOCK_NBT);
+        boolean restoreBlockNbt = CreeperHealing.CONFIG.preferences.restore_block_nbt.get();
         if (blockEntity != null && restoreBlockNbt) {
             return new SingleAffectedBlock(pos, state, worldRegistryKey, blockEntity.saveWithFullMetadata(world.registryAccess()), blockPlacementDelay, false);
         }
@@ -46,7 +47,7 @@ public interface AffectedBlock {
     static AffectedBlock newInstance(BlockPos firstHalfPos, BlockState firstHalfState, @Nullable BlockEntity firstHalfBlockEntity, BlockPos secondHalfPos, @Nullable BlockState secondHalfState, @Nullable BlockEntity secondHalfBlockEntity, Level world) {
         ResourceKey<Level> worldRegistryKey = world.dimension();
         long blockPlacementDelay = ConfigUtils.getBlockPlacementDelay();
-        boolean restoreBlockNbt = ConfigUtils.getRawBooleanSetting(ConfigUtils.RESTORE_BLOCK_NBT);
+        boolean restoreBlockNbt = CreeperHealing.CONFIG.preferences.restore_block_nbt.get();
         if ((firstHalfBlockEntity != null && secondHalfBlockEntity != null) && restoreBlockNbt) {
             return new DoubleAffectedBlock(firstHalfPos, firstHalfState, firstHalfBlockEntity.saveWithFullMetadata(world.registryAccess()), secondHalfPos, secondHalfState, secondHalfBlockEntity.saveWithFullMetadata(world.registryAccess()), worldRegistryKey, blockPlacementDelay, false);
         }

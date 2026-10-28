@@ -1,5 +1,7 @@
 package io.github.arkosammy12.creeperhealing;
 
+import io.github.arkosammy12.creeperhealing.config.CreeperHealingConfig;
+import me.fzzyhmstrs.fzzy_config.api.ConfigApiJava;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.server.MinecraftServer;
@@ -14,6 +16,7 @@ public class CreeperHealing implements ModInitializer {
 
     public static final String MOD_ID = "creeperhealing";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+    public static final CreeperHealingConfig CONFIG = ConfigApiJava.registerAndLoadConfig(CreeperHealingConfig::new);
     public static final DefaultExplosionManager EXPLOSION_MANAGER = new DefaultExplosionManager(DefaultSerializedExplosion.CODEC);
 
     @Override

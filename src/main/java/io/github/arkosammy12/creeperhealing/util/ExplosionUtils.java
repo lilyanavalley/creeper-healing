@@ -1,5 +1,6 @@
 package io.github.arkosammy12.creeperhealing.util;
 
+import io.github.arkosammy12.creeperhealing.CreeperHealing;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.entity.Entity;
@@ -56,8 +57,8 @@ public final class ExplosionUtils {
 
     public static List<BlockPos> filterPositionsToHeal(Collection<BlockPos> positions, Function<BlockPos, BlockState> positionToStateMapper) {
         List<BlockPos> affectedPositions = new ArrayList<>();
-        boolean whitelistEnabled = ConfigUtils.getRawBooleanSetting(ConfigUtils.ENABLE_WHITELIST);
-        List<? extends String> whitelist = ConfigUtils.getRawStringListSetting(ConfigUtils.WHITELIST);
+        boolean whitelistEnabled = CreeperHealing.CONFIG.preferences.enable_whitelist.get();
+        List<? extends String> whitelist = CreeperHealing.CONFIG.whitelist.whitelist.get();
         for (BlockPos affectedPosition : positions) {
             // Hardcoded exception. Place before all logic
             BlockState affectedState = positionToStateMapper.apply(affectedPosition);
@@ -175,7 +176,7 @@ public final class ExplosionUtils {
     }
 
     public static void playBlockPlacementSoundEffect(Level world, BlockPos blockPos, BlockState blockState) {
-        boolean placementSoundEffectSetting = ConfigUtils.getRawBooleanSetting(ConfigUtils.BLOCK_PLACEMENT_SOUND_EFFECT);
+        boolean placementSoundEffectSetting = CreeperHealing.CONFIG.preferences.block_placement_sound_effect.get();
         boolean doPlacementSoundEffect = placementSoundEffectSetting && !world.isClientSide() && !blockState.isAir();
         if (!doPlacementSoundEffect) {
             return;
@@ -187,7 +188,7 @@ public final class ExplosionUtils {
         if (!(world instanceof ServerLevel serverWorld)) {
             return;
         }
-        boolean blockPlacementParticlesSetting = ConfigUtils.getRawBooleanSetting(ConfigUtils.BLOCK_PLACEMENT_PARTICLES);
+        boolean blockPlacementParticlesSetting = CreeperHealing.CONFIG.preferences.block_placement_particles.get();
         if (!blockPlacementParticlesSetting) {
             return;
         }

@@ -1,5 +1,6 @@
 package io.github.arkosammy12.creeperhealing.explosions.factories;
 
+import io.github.arkosammy12.creeperhealing.CreeperHealing;
 import io.github.arkosammy12.creeperhealing.blocks.DoubleAffectedBlock;
 import io.github.arkosammy12.creeperhealing.explosions.*;
 import net.minecraft.world.level.block.state.BlockState;
@@ -41,7 +42,7 @@ public class DefaultExplosionFactory implements ExplosionEventFactory<AbstractEx
         if (affectedBlocks == null || affectedBlocks.isEmpty()) {
             return null;
         }
-        ExplosionHealingMode healingMode = ConfigUtils.getRawEnumSetting(ConfigUtils.MODE);
+        ExplosionHealingMode healingMode = CreeperHealing.CONFIG.explosion_healing_mode.mode.get();
         AbstractExplosionEvent explosionEvent = switch (healingMode) {
             case DEFAULT_MODE -> new DefaultExplosionEvent(affectedBlocks, this.blastRadius, this.center);
             case DAYTIME_HEALING_MODE -> new DaytimeExplosionEvent(affectedBlocks, this.blastRadius, this.center);
@@ -60,7 +61,7 @@ public class DefaultExplosionFactory implements ExplosionEventFactory<AbstractEx
         }
         BlockPos center = ExplosionUtils.calculateCenter(affectedPositions);
         int radius = ExplosionUtils.getMaxExplosionRadius(affectedPositions);
-        ExplosionHealingMode healingMode = ConfigUtils.getRawEnumSetting(ConfigUtils.MODE);
+        ExplosionHealingMode healingMode = CreeperHealing.CONFIG.explosion_healing_mode.mode.get();
         AbstractExplosionEvent explosionEvent = switch (healingMode) {
             case DEFAULT_MODE -> new DefaultExplosionEvent(affectedBlocks, radius, center);
             case DAYTIME_HEALING_MODE -> new DaytimeExplosionEvent(affectedBlocks, radius, center);
@@ -94,7 +95,7 @@ public class DefaultExplosionFactory implements ExplosionEventFactory<AbstractEx
                 singleAffectedBlock.setTimer(blockHealDelay);
             }
         });
-        ExplosionHealingMode healingMode = ConfigUtils.getRawEnumSetting(ConfigUtils.MODE);
+        ExplosionHealingMode healingMode = CreeperHealing.CONFIG.explosion_healing_mode.mode.get();
         AbstractExplosionEvent explosionEvent = switch (healingMode) {
             case DEFAULT_MODE -> new DefaultExplosionEvent(sortedAffectedBlocks, healTimer, blockCounter, radius, center);
             case DAYTIME_HEALING_MODE -> new DaytimeExplosionEvent(sortedAffectedBlocks, healTimer, blockCounter, radius, center);

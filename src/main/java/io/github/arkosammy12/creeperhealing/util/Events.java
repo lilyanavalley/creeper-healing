@@ -78,8 +78,8 @@ public final class Events {
         boolean hasInstantHealth = statusEffects.stream().anyMatch(statusEffect -> statusEffect.equals(instantHealthEffect));
         Holder<MobEffect> regenerationEffect = MobEffects.REGENERATION;
         boolean hasRegeneration = statusEffects.stream().anyMatch(statusEffect -> statusEffect.equals(regenerationEffect));
-        boolean healOnHealingPotion = ConfigUtils.getRawBooleanSetting(ConfigUtils.HEAL_ON_HEALING_POTION_SPLASH);
-        boolean healOnRegenerationPotion = ConfigUtils.getRawBooleanSetting(ConfigUtils.HEAL_ON_REGENERATION_POTION_SPLASH);
+        boolean healOnHealingPotion = CreeperHealing.CONFIG.preferences.heal_on_healing_potion_splash.get();
+        boolean healOnRegenerationPotion = CreeperHealing.CONFIG.preferences.heal_on_regeneration_potion_splash.get();
         if (hasInstantHealth && healOnHealingPotion) {
             for (ExplosionEvent explosionEvent : CreeperHealing.EXPLOSION_MANAGER.getExplosionEvents().toList()) {
                 boolean potionHitExplosion = explosionEvent.getAffectedBlocks().anyMatch(affectedBlock -> affectedBlock.getBlockPos().equals(potionHitPosition));
